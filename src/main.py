@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from src.essay.router import essay_router
 from src.user.router import user_router
 from src.auth.router import auth_router
 
@@ -31,6 +32,7 @@ app.add_middleware(
 
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
 app.include_router(user_router, prefix="/user", tags=["User"])
+app.include_router(essay_router, prefix="/essay", tags=["Essay"])
 
 @app.get("/health")
 def check_server_health():
