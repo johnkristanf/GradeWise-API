@@ -6,6 +6,7 @@ from sqlmodel import SQLModel, Field
 
 class UserBase(SQLModel):
     """Base fields shared across schemas"""
+
     first_name: str = Field(min_length=1, max_length=50)
     middle_name: Optional[str] = Field(default=None, max_length=50)
     last_name: str = Field(min_length=1, max_length=50)

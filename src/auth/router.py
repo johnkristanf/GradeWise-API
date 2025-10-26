@@ -27,4 +27,3 @@ async def register(
 @auth_router.post("/login", status_code=200)
 async def login(user: LoginUser, session: AsyncSession = Depends(Database.get_session)):
     return await auth_service.login(user.email, user.password, session)
-    

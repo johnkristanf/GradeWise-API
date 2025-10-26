@@ -2,15 +2,15 @@ from pwdlib import PasswordHash
 from sqlalchemy import select
 from jose import JWTError, jwt
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 from fastapi import HTTPException, status
 
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
-from ..config import settings
-from ..user.models import User
-from .schemas import FetchUser, RegisterUser
+from src.config import settings
+from src.user.models import User
+from src.auth.schemas import FetchUser, RegisterUser
 
 
 class JWTService:
@@ -19,7 +19,7 @@ class JWTService:
         self.algorithm = algorithm
 
     def create_access_token(self, data: dict, expires_delta: timedelta | None = None):
-        expire = datetime.now() + (expires_delta or timedelta(minutes=15))
+        expire = datetime.now(timezone.utc) + expires_delta 
 
         to_encode = data.copy()
         to_encode.update({"exp": expire})
@@ -28,7 +28,8 @@ class JWTService:
     def decode_token(self, token: str):
         try:
             return jwt.decode(token, self.secret_key, algorithms=[self.algorithm])
-        except JWTError:
+        except JWTError as e:
+            print(f"JWT Error: {e}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid or expired token",
@@ -37,7 +38,6 @@ class JWTService:
 
 
 class AuthService:
-
     def __init__(self, jwt_service: JWTService):
         self.jwt_service = jwt_service
         self.password_hash = PasswordHash.recommended()
@@ -73,16 +73,17 @@ class AuthService:
 
         return FetchUser.model_validate(registered_user)
 
+
     async def login(self, email: str, password: str, session: AsyncSession):
         user = await self.get_user_by_email(session, email)
-        if not user or not self.verify_password(password, user.password):
+        if user is None or not self.verify_password(password, user.password):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid credentials",
             )
 
         access_token = self.jwt_service.create_access_token(
-            data={"sub": user.id, "email": user.email},
+            data={"sub": str(user.id), "email": user.email},
             expires_delta=timedelta(minutes=settings.JWT_TOKEN_EXPIRES_MINUTES),
         )
 
