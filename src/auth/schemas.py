@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import Optional
 
 from sqlmodel import SQLModel, Field
-from .models import User
 
 
 class UserBase(SQLModel):
@@ -17,6 +16,18 @@ class UserBase(SQLModel):
 
 class RegisterUser(UserBase):
     password: str = Field(min_length=8, max_length=100)
+
+
+class LoginUser(SQLModel):
+    email: str = Field(
+        regex=r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+    )
+    password: str = Field(min_length=8, max_length=100)
+
+    # This drops the fields inside the request body that are not set in the schema
+    class Config:
+        extra = "ignore"
+
 
 class FetchUser(UserBase):
     id: int
