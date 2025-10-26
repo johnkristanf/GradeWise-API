@@ -21,8 +21,7 @@ class Database:
     async def initialize(cls):
         """Initialize both raw SQL pool and ORM engine"""
         await cls.create_pool()
-        cls.init_orm()
-        print("✓ Database initialized")
+        cls.create_session()
 
     @classmethod
     async def create_pool(cls):
@@ -37,13 +36,13 @@ class Database:
         )
 
     @classmethod
-    def init_orm(cls):
+    def create_session(cls):
         """Initialize SQLAlchemy async engine for ORM"""
         database_url = f"mysql+aiomysql://{settings.DB_USER}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_DATABASE}"
 
         cls.engine = create_async_engine(
             database_url,
-            echo=False,  # Set to True for SQL query logging
+            echo=False, 
             pool_size=5,
             max_overflow=10,
             pool_pre_ping=True,  # Verify connections before using
@@ -51,7 +50,7 @@ class Database:
 
         cls.async_session_maker = sessionmaker(
             cls.engine,
-            class_= AsyncSession,
+            class_=AsyncSession,
             expire_on_commit=False,
         )
 
