@@ -13,7 +13,11 @@ class Settings(BaseSettings):
     # Security
     OPEN_AI_API_KEY: str
     HANDWRITING_OCR_API_TOKEN: str
+    
+    # JWT
     JWT_SECRET_KEY: str
+    JWT_ALGORITHM: str
+    JWT_TOKEN_EXPIRES_MINUTES: int
 
     # Database
     DB_HOST: str
