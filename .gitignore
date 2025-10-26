@@ -1,1 +1,127 @@
-venv
+# ========================
+# Python General
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ========================
+# Virtual Environments
+# ========================
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# ========================
+# Distribution / Packaging
+# ========================
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ========================
+# PyInstaller
+# ========================
+# Usually creates temporary build and dist folders
+*.manifest
+*.spec
+
+# ========================
+# Unit test / Coverage reports
+# ========================
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# ========================
+# Jupyter Notebook
+# ========================
+.ipynb_checkpoints
+
+# ========================
+# PyCharm / VSCode / IDEs
+# ========================
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*.bak
+
+# ========================
+# Logs and temp files
+# ========================
+*.log
+*.tmp
+*.temp
+logs/
+debug.log
+
+# ========================
+# Environment Variables
+# ========================
+.env
+.env.local
+.env.*.local
+*.env
+
+# ========================
+# Django / Flask / FastAPI Specific
+# ========================
+db.sqlite3
+instance/
+.webassets-cache
+__pypackages__/
+*.db
+
+# ========================
+# mypy / pylint / type checkers
+# ========================
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# ========================
+# OS Generated Files
+# ========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ========================
+# Docker / CI
+# ========================
+.dockerignore
+Dockerfile*
+docker-compose.yml
+.gitlab-ci.yml
+*.pid
