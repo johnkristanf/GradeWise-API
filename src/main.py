@@ -29,7 +29,6 @@ app.add_middleware(
 
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
 
-
 @app.get("/health")
 def check_server_health():
     return {"message": "Server is Healthy"}
