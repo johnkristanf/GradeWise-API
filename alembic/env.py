@@ -7,9 +7,9 @@ from alembic import context
 
 from src.config import settings
 from sqlmodel import SQLModel
-import sqlmodel.sql.sqltypes
 
-from src.auth.models import User
+from src.user.models import User
+from src.rubric.models import Rubric , Criterion, PerformanceLevel, CriterionLevelDescriptor
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

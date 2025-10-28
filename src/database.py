@@ -37,7 +37,8 @@ class Database:
 
     @classmethod
     def create_session(cls):
-        """Initialize SQLAlchemy async engine for ORM"""
+        
+        # Initialize SQLAlchemy async engine for ORM
         database_url = f"mysql+aiomysql://{settings.DB_USER}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_DATABASE}"
 
         cls.engine = create_async_engine(
@@ -95,3 +96,6 @@ class Database:
         """Close both pool and engine"""
         await cls.close_pool()
         await cls.close_engine()
+
+
+
