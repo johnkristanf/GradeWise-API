@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from rubric.router import rubric_router
+from src.rubric.router import rubric_router
 from src.essay.router import essay_router
 from src.user.router import user_router
 from src.auth.router import auth_router

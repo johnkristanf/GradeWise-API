@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     # Security
     OPEN_AI_API_KEY: str
     HANDWRITING_OCR_API_TOKEN: str
-    
+
     # JWT
     JWT_SECRET_KEY: str
     JWT_ALGORITHM: str
@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     DB_DATABASE: str
 
     # CORS
-    CLIENT_ORIGIN_URLS: List[str] = ["http://localhost:9000"]
+    CLIENT_ORIGIN_URLS: List[str] = ["http://localhost:3000"]
 
 
 settings = Settings()
