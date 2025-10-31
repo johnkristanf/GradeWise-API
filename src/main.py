@@ -14,16 +14,16 @@ from src.database import Database
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Establish database connection on startup
-    await Database.initialize()
+    Database.initialize()
 
     # Close the database connection on shutdown
     yield
-    await Database.close_all()
+    await Database.close()
 
 
 app = FastAPI(title=settings.APP_NAME, debug=settings.DEBUG, lifespan=lifespan)
 app.add_middleware(
-    CORSMiddleware,  # <-- Pass the class, not an instance
+    CORSMiddleware,  
     allow_origins=settings.CLIENT_ORIGIN_URLS,
     allow_credentials=True,
     allow_methods=["*"],
