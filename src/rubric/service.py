@@ -1,21 +1,27 @@
 from sqlalchemy.ext.asyncio.session import AsyncSession
-from src.rubric.models import Criterion, CriterionLevelDescriptor, PerformanceLevel, Rubric
-from src.rubric.schemas import RubricCreateIn
+from sqlalchemy.orm import selectinload
+from sqlmodel import select
+from src.rubric.schemas import LLMConsumableRubricOut
+from src.rubric.models import (
+    Criterion,
+    CriterionLevelDescriptor,
+    PerformanceLevel,
+    Rubric,
+)
 
 
 class RubricService:
     async def create_rubric(self, rubric_data: dict, session: AsyncSession):
-        print("RUBRIC INSIDE SERVICE: ", rubric_data)
-        
         rubric = Rubric(
             name=rubric_data["name"],
             student_level=rubric_data["student_level"],
             grade_intensity=rubric_data["grade_intensity"],
             language=rubric_data["language"],
+            essay_type=rubric_data["essay_type"],
         )
 
         session.add(rubric)
-        await session.flush()  # This generates the rubric.id without committing
+        await session.flush()
 
         # 2. Create and insert Criteria
         criteria_map = {}  # Map old IDs to new database IDs
@@ -51,3 +57,23 @@ class RubricService:
         await session.refresh(rubric)
 
         return rubric
+
+    async def get_rubric_by_id(self, rubric_id, session: AsyncSession) -> Rubric | None:
+        statement = (
+            select(Rubric)
+            .where(Rubric.id == rubric_id)
+            .options(
+                selectinload(Rubric.criterion)
+                .selectinload(Criterion.descriptors)
+                .selectinload(CriterionLevelDescriptor.performance_levels)
+            )
+        )
+
+        result = await session.execute(statement)
+        rubric_orm = result.scalars().first()
+
+        if not rubric_orm:
+            return None
+
+        await session.refresh(rubric_orm)
+        return LLMConsumableRubricOut.model_validate(rubric_orm)
