@@ -28,6 +28,10 @@ class Settings(BaseSettings):
 
     # CORS
     CLIENT_ORIGIN_URLS: List[str] = ["http://localhost:3000"]
+    
+    # Celery
+    CELERY_BROKER_URL: str
+    CELERY_BACKEND_URL: str
 
 
 settings = Settings()
