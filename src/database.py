@@ -18,27 +18,11 @@ class Database:
 
     # DATABASE INITIALIZATION SECTION
     @classmethod
-    async def initialize(cls):
-        """Initialize both raw SQL pool and ORM engine"""
-        await cls.create_pool()
+    def initialize(cls):
         cls.create_session()
 
     @classmethod
-    async def create_pool(cls):
-        cls.pool = await aiomysql.create_pool(
-            host=settings.DB_HOST,
-            port=settings.DB_PORT,
-            user=settings.DB_USER,
-            password=settings.DB_PASSWORD,
-            db=settings.DB_DATABASE,
-            minsize=5,
-            maxsize=10,
-        )
-
-    @classmethod
     def create_session(cls):
-        
-        # Initialize SQLAlchemy async engine for ORM
         database_url = f"mysql+aiomysql://{settings.DB_USER}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_DATABASE}"
 
         cls.engine = create_async_engine(
@@ -57,22 +41,13 @@ class Database:
 
     # GET CONNECTION SECTION
     @classmethod
-    @asynccontextmanager
-    async def get_cursor(cls):
-        async with cls.pool.acquire() as conn:
-            async with conn.cursor(aiomysql.DictCursor) as cursor:
-                yield cursor, conn
-
-    @classmethod
-    async def get_session(cls) -> AsyncGenerator[AsyncSession, None]:
-        """
-        Get SQLAlchemy session with automatic commit/rollback and error handling
-        """
+    async def get_session(
+        cls,
+    ) -> AsyncGenerator[AsyncSession, None]:
         async with cls.async_session_maker() as session:
             try:
                 yield session
-                await session.commit()  # Auto-commit on success
-            except Exception as e:
+            except Exception:
                 await session.rollback()
                 raise
             finally:
@@ -80,22 +55,7 @@ class Database:
 
     # CLOSE METHODS SECTION
     @classmethod
-    async def close_pool(cls):
-        if cls.pool:
-            cls.pool.close()
-            await cls.pool.wait_closed()
-
-    @classmethod
-    async def close_engine(cls):
+    async def close(cls):
         """Close ORM engine"""
         if cls.engine:
             await cls.engine.dispose()
-
-    @classmethod
-    async def close_all(cls):
-        """Close both pool and engine"""
-        await cls.close_pool()
-        await cls.close_engine()
-
-
-
