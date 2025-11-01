@@ -27,6 +27,10 @@ After conducting multiple surveys and speaking directly with educators, several 
 
 ## 🛠 Tech Stack
 
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react,tailwind,python,fastapi,mysql,aws,docker,githubactions" alt="Tech Stack Icons" />
+</p>
+
 **Frontend:** React, TailwindCSS  
 **Backend:** Python, FastAPI  
 **Database:** MySQL  
@@ -61,12 +65,6 @@ After conducting multiple surveys and speaking directly with educators, several 
 - Add analytics dashboard for student performance tracking.  
 - Implement support for multiple grading rubrics per course.  
 - Introduce multilingual essay evaluation support.
-
----
-
-## 📜 License
-
-This project is licensed under the **MIT License** – feel free to use and modify for educational or research purposes.
 
 ---
 
