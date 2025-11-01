@@ -10,7 +10,8 @@ from sqlmodel import SQLModel
 
 from src.user.models import User
 from src.rubric.models import Rubric , Criterion, PerformanceLevel, CriterionLevelDescriptor
-from src.essay.models import Essay, OverAllEssayGrade, CriterionEssayGrade, Classes, Assignments
+from src.essay.models import Essay, Classes, Assignments
+from src.grade.models import OverAllEssayGrade, CriterionEssayGrade
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
