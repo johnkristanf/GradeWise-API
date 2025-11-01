@@ -14,11 +14,11 @@ from src.database import Database
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Establish database connection on startup
-    Database.initialize()
+    Database.create_async_session()
 
     # Close the database connection on shutdown
     yield
-    await Database.close()
+    await Database.close_async()
 
 
 app = FastAPI(title=settings.APP_NAME, debug=settings.DEBUG, lifespan=lifespan)
