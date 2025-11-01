@@ -6,25 +6,25 @@ class EssayStatus(str, Enum):
     
     
 class RubricStudentLevel(str, Enum):
-    ELEMENTARY = "elementary"
-    HIGH_SCHOOL = "high_school"
-    COLLEGE = "college"
+    ELEMENTARY = "Elementary"
+    HIGH_SCHOOL = "High School"
+    COLLEGE = "College"
     
     
 class RubricGradeIntensity(str, Enum):
-    EASY = "easy"
-    NORMAL = "normal"
-    STRICT = "strict"
+    EASY = "Easy"
+    MODERATE = "Moderate"
+    STRICT = "Strict"
     
     
 class RubricLanguage(str, Enum):
-    ENGLISH = "english"
-    FILIPINO = "filipino"
+    ENGLISH = "English"
+    FILIPINO = "Filipino"
 
 
 class RubricEssayType(str, Enum):
-    ARGUMENTATIVE = "argumentative"
-    NARRATIVE = "narrative"
-    DESCRIPTIVE = "descriptive"
-    PERSUASIVE = "persuasive"
-    REFLECTIVE = "reflective"
+    ARGUMENTATIVE = "Argumentative"
+    NARRATIVE = "Narrative"
+    DESCRIPTIVE = "Descriptive"
+    PERSUASIVE = "Persuasive"
+    REFLECTIVE = "Reflective"
