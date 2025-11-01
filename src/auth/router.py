@@ -18,12 +18,12 @@ auth_service = AuthService(jwt_service=jwt_service)
 
 @auth_router.post("/register", response_model=FetchUser, status_code=201)
 async def register(
-    user: RegisterUser, session: AsyncSession = Depends(Database.get_session)
+    user: RegisterUser, session: AsyncSession = Depends(Database.get_async_session)
 ):
     registered_user = await auth_service.register(user, session)
     return registered_user
 
 
 @auth_router.post("/login", status_code=200)
-async def login(user: LoginUser, session: AsyncSession = Depends(Database.get_session)):
+async def login(user: LoginUser, session: AsyncSession = Depends(Database.get_async_session)):
     return await auth_service.login(user.email, user.password, session)

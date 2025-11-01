@@ -20,7 +20,7 @@ jwt_service = JWTService(
 
 async def get_current_user(
     token: str = Depends(oauth2_scheme),
-    session: AsyncSession = Depends(Database.get_session),
+    session: AsyncSession = Depends(Database.get_async_session),
 ):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
