@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio.session import AsyncSession
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import Session, selectinload
 from sqlmodel import select
 from src.rubric.schemas import LLMConsumableRubricOut
 from src.rubric.models import (
@@ -58,7 +58,7 @@ class RubricService:
 
         return rubric
 
-    async def get_rubric_by_id(self, rubric_id, session: AsyncSession) -> Rubric | None:
+    async def async_get_rubric_by_id(self, rubric_id, session: AsyncSession) -> Rubric | None:
         statement = (
             select(Rubric)
             .where(Rubric.id == rubric_id)
@@ -71,9 +71,28 @@ class RubricService:
 
         result = await session.execute(statement)
         rubric_orm = result.scalars().first()
-
         if not rubric_orm:
             return None
-
         await session.refresh(rubric_orm)
+
+        return LLMConsumableRubricOut.model_validate(rubric_orm)
+
+    def sync_get_rubric_by_id(self, rubric_id, session: Session) -> Rubric | None:
+        statement = (
+            select(Rubric)
+            .where(Rubric.id == rubric_id)
+            .options(
+                selectinload(Rubric.criterion)
+                .selectinload(Criterion.descriptors)
+                .selectinload(CriterionLevelDescriptor.performance_levels)
+            )
+        )
+
+        result = session.execute(statement)
+        rubric_orm = result.scalars().first()
+        if not rubric_orm:
+            return None
+        session.commit()
+        session.refresh(rubric_orm)
+
         return LLMConsumableRubricOut.model_validate(rubric_orm)
